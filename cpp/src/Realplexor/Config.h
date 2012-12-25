@@ -15,6 +15,8 @@ class Config
         string time;
     };
 
+    static inline void void_function(const string&) { }
+
 public:
     int                          verbosity;
     checked_map<string, string>  users;
@@ -42,8 +44,9 @@ public:
 
     Config(): config("config"), users("users list") 
     {
-        logger = [](const string&)->void{}; // default
-    }
+        logger = (logger_t)Config::void_function;
+
+    }	
 
     // Sets another logger routine for this config.
     void set_logger(logger_t l)
