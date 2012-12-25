@@ -23,16 +23,20 @@
 #   yum install libmemcached-devel
 #
 
-GCC="g++ -std=gnu++0x -static"
-#GCC="g++ -std=gnu++0x"
+#GCC="g++ -std=gnu++0x -static"
+GCC="g++ -std=c++11"
 #DEBUG="-g3 -O0"
 DEBUG="-O3"
-export INCLUDE=$INCLUDE:libev
-export LIB=$INCLUDE:libev/.libs
+#export INCLUDE=$INCLUDE:libev
+#export LIB=$INCLUDE:libev/.libs
 
 rm -f ../../dklab_realplexor 2>/dev/null
 $GCC dklab_realplexor.cpp \
+    -Wno-strict-aliasing \
     $DEBUG -Wfatal-errors -Wall -Werror \
-    -pthread -lcrypt -lboost_filesystem -lboost_system -lboost_regex -lev \
+    $(pkg-config --libs --cflags libev) \
+    -pthread -lcrypt -lboost_filesystem -lboost_system -lboost_regex \
     -o ../../dklab_realplexor
+
+#-I/usr/include/libev/ \
 exit $?
